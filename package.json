@@ -5,13 +5,12 @@
   "main": "lib/index.js",
   "author": "Half-Shot <me@half-shot.uk>",
   "license": "Apache-2.0",
-  "types": "./lib/index.d.ts",
+  "types": "lib/index.d.ts",
   "private": false,
   "scripts": {
     "build": "tsc"
   },
   "dependencies": {
-    "axios": "^0.27.2",
     "cross-fetch": "^3.1.5"
   },
   "devDependencies": {
