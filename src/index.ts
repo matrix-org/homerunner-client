@@ -113,7 +113,7 @@ export namespace Homerunner {
 		 */
 		async destroy(blueprintName: string) {
 			const req = platformFetch(`${this.baseUrl}/destroy`, {
-				method: "DELETE",
+				method: "POST",
 				body: JSON.stringify({ blueprint_name: blueprintName }),
 				headers: {
 					'Content-Type': 'application/json',
