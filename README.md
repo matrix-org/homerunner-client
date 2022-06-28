@@ -12,7 +12,11 @@ The library is environment variable aware, and will use the following URLs in or
 2. `http://localhost:{process.env.HOMERUNNER_PORT}`, if `HOMERUNNER_PORT` is provided as an environment variable.
 3. `http://localhost:54321`
 
-## Example
+## Usage
+
+You can install the package with `npm install homerunner-client` or `yarn add homerunner-client`.
+
+### Example
 
 Below is a simple example of how to use the library. Consult the type definitions
 for more advanced usage.
