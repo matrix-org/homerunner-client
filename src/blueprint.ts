@@ -15,46 +15,46 @@ limitations under the License.
 */
 
 interface Room {
-	Ref?: string;
-	Creator?: string;
-	CreateRoom?: Record<string, unknown>;
-	Events?: {
-		Type: string;
-		Sender: string;
-		StateKey?: string;
-	}[];
+    Ref?: string;
+    Creator?: string;
+    CreateRoom?: Record<string, unknown>;
+    Events?: {
+        Type: string;
+        Sender: string;
+        StateKey?: string;
+    }[];
 }
 
 /**
  * A blueprint for creating a homeserver deployment.
  */
- export interface Blueprint {
-	// The name of the blueprint. Containers will use this name.
-	Name: string;
-	// The list of homeservers to create for this deployment.
-	Homeservers: {
-		// The name of this homeserver. Containers will use this name.
-		Name: string;
-		// The list of users to create on this homeserver.
-		Users?: {
-			Localpart: string;
-			DisplayName: string;
-			AvatarURL?: string;
-			AccountData?: {
-				Key: string;
-				Value: Record<string, unknown>;
-			}[];
-		}[];
-		// The list of rooms to create on this homeserver
-		Rooms?: (Room&{Ref: string}|Room&{Creator: string})[];
-		// The list of application services to create on the homeserver
-		ApplicationServices?: {
-			ID: string;
-			URL?: string;
-			SenderLocalpart?: string;
-			RateLimited?: boolean;
-		}[];
-	}[];
-	// A set of user IDs to retain access_tokens for. If empty, all tokens are kept.
-	KeepAccessTokensForUsers?: string[];
+export interface Blueprint {
+    // The name of the blueprint. Containers will use this name.
+    Name: string;
+    // The list of homeservers to create for this deployment.
+    Homeservers: {
+        // The name of this homeserver. Containers will use this name.
+        Name: string;
+        // The list of users to create on this homeserver.
+        Users?: {
+            Localpart: string;
+            DisplayName: string;
+            AvatarURL?: string;
+            AccountData?: {
+                Key: string;
+                Value: Record<string, unknown>;
+            }[];
+        }[];
+        // The list of rooms to create on this homeserver
+        Rooms?: (Room&{Ref: string}|Room&{Creator: string})[];
+        // The list of application services to create on the homeserver
+        ApplicationServices?: {
+            ID: string;
+            URL?: string;
+            SenderLocalpart?: string;
+            RateLimited?: boolean;
+        }[];
+    }[];
+    // A set of user IDs to retain access_tokens for. If empty, all tokens are kept.
+    KeepAccessTokensForUsers?: string[];
 }

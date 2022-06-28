@@ -1,0 +1,8 @@
+{
+    "plugins": [
+        "matrix-org"
+    ],
+    "extends": [
+        "plugin:matrix-org/typescript"
+    ]
+}
