@@ -4,5 +4,6 @@
     "outDir": "./lib",
     "sourceMap": true,
     "declaration": true,
-  }
+  },
+  "exclude": ["tests"]
 }
