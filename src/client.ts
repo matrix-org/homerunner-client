@@ -127,4 +127,17 @@ export class Client {
             throw new HomerunnerError(result.status, await result.text());
         }
     }
+    
+    /**
+     * Check to see if the homerunner service is up and listening for requests.
+     */
+    async health() {
+        const req = this.fetch(`${this.baseUrl}/health`, {
+            method: 'GET'
+        });
+        const result = await req;
+        if (result.status !== 200) {
+            throw new Error('Homerunner did not respond with an OK response');
+        }
+    }
 }
