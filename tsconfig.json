@@ -1,6 +1,7 @@
 {
   "extends": "@tsconfig/node14/tsconfig.json",
   "compilerOptions": {
+    "rootDir": "./src",
     "outDir": "./lib",
     "sourceMap": true,
     "declaration": true,
