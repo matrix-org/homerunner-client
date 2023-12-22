@@ -13,8 +13,6 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-import { default as crossFetch } from 'cross-fetch';
-
 import { Blueprint } from './blueprint';
 
 export interface Homeserver {
@@ -66,8 +64,6 @@ export class HomerunnerError extends Error {
     }
 }
 
-type Fetch = (input: RequestInfo | string, init?: RequestInit) => Promise<Response>;
-
 /**
  * A client interface for Homerunner.
  * @see https://github.com/matrix-org/complement/tree/main/cmd/homerunner
@@ -84,7 +80,7 @@ export class Client {
     constructor(
         public readonly baseUrl = process.env.HOMERUNNER_URL ||
             `http://localhost:${process.env.HOMERUNNER_PORT ?? 54321}`,
-        private readonly fetch: Fetch = global.fetch || crossFetch) {
+        private readonly fetch = global.fetch) {
         if (baseUrl.endsWith('/')) {
             this.baseUrl = baseUrl.slice(0, -1);
         }
@@ -107,7 +103,7 @@ export class Client {
         if (result.status !== 200) {
             throw new HomerunnerError(result.status, await result.text());
         }
-        return result.json();
+        return result.json() as Promise<CreateResponse>;
     }
 
     /**

@@ -47,7 +47,7 @@ describe('Client', () => {
     });
 
     it('should be able to create a blueprint with a blueprint name', async () => {
-        const client = new Client(undefined, async (input: RequestInfo, init?: RequestInit) => {
+        const client = new Client(undefined, async (input, init) => {
             expect(input).toBe('http://localhost:54321/create');
             expect(init?.headers).toEqual({
                 'Content-Type': 'application/json',
@@ -63,7 +63,7 @@ describe('Client', () => {
     });
 
     it('should be able to create a blueprint with a base_image_uri and blueprint_name', async () => {
-        const client = new Client(undefined, async (input: RequestInfo, init?: RequestInit) => {
+        const client = new Client(undefined, async (input, init) => {
             expect(input).toBe('http://localhost:54321/create');
             expect(init?.headers).toEqual({
                 'Content-Type': 'application/json',
@@ -91,7 +91,7 @@ describe('Client', () => {
                 }],
             },
         };
-        const client = new Client(undefined, async (input: RequestInfo, init?: RequestInit) => {
+        const client = new Client(undefined, async (input, init) => {
             expect(input).toBe('http://localhost:54321/create');
             expect(init?.headers).toEqual({
                 'Content-Type': 'application/json',
@@ -107,7 +107,7 @@ describe('Client', () => {
     });
 
     it('should be able to destroy a blueprint', async () => {
-        const client = new Client(undefined, async (input: RequestInfo, init?: RequestInit) => {
+        const client = new Client(undefined, async (input, init) => {
             expect(input).toBe('http://localhost:54321/destroy');
             expect(init?.headers).toEqual({
                 'Content-Type': 'application/json',
@@ -123,7 +123,7 @@ describe('Client', () => {
     });
 
     it('should raise errors appropriately', async () => {
-        const client = new Client(undefined, async (input: RequestInfo, init?: RequestInit) => {
+        const client = new Client(undefined, async () => {
             return {
                 text: async () => 'an error',
                 status: 401,
