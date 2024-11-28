@@ -14,9 +14,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { Client, HomerunnerError } from '../src/client';
+import { Client, HomerunnerError } from "../src/client";
 
-describe('Client', () => {
+describe("Client", () => {
     const OLD_ENV = process.env;
 
     beforeEach(() => {
@@ -27,30 +27,30 @@ describe('Client', () => {
         process.env = OLD_ENV; // Restore old environment
     });
 
-    it('should handle base paths with a trailing slash', () => {
-        expect(new Client('http://example.com/').baseUrl).toEqual('http://example.com');
-        expect(new Client('http://example.com/foo/bar/').baseUrl).toEqual('http://example.com/foo/bar');
+    it("should handle base paths with a trailing slash", () => {
+        expect(new Client("http://example.com/").baseUrl).toEqual("http://example.com");
+        expect(new Client("http://example.com/foo/bar/").baseUrl).toEqual("http://example.com/foo/bar");
     });
 
-    it('should use the HOMERUNNER_URL env', () => {
-        process.env.HOMERUNNER_URL = 'https://test-example.com';
-        expect(new Client().baseUrl).toEqual('https://test-example.com');
+    it("should use the HOMERUNNER_URL env", () => {
+        process.env.HOMERUNNER_URL = "https://test-example.com";
+        expect(new Client().baseUrl).toEqual("https://test-example.com");
     });
 
-    it('should use the HOMERUNNER_PORT env, if HOMERUNNER_URL is not defined', () => {
-        process.env.HOMERUNNER_PORT = '1337';
-        expect(new Client().baseUrl).toEqual('http://localhost:1337');
+    it("should use the HOMERUNNER_PORT env, if HOMERUNNER_URL is not defined", () => {
+        process.env.HOMERUNNER_PORT = "1337";
+        expect(new Client().baseUrl).toEqual("http://localhost:1337");
     });
 
-    it('should fall back to the default URL', () => {
-        expect(new Client().baseUrl).toEqual('http://localhost:54321');
+    it("should fall back to the default URL", () => {
+        expect(new Client().baseUrl).toEqual("http://localhost:54321");
     });
 
-    it('should be able to create a blueprint with a blueprint name', async () => {
+    it("should be able to create a blueprint with a blueprint name", async () => {
         const client = new Client(undefined, async (input, init) => {
-            expect(input).toBe('http://localhost:54321/create');
+            expect(input).toBe("http://localhost:54321/create");
             expect(init?.headers).toEqual({
-                'Content-Type': 'application/json',
+                "Content-Type": "application/json",
             });
             expect(init?.body).toEqual('{"blueprint_name":"my_blueprint"}');
             console.log(input, init);
@@ -59,14 +59,14 @@ describe('Client', () => {
                 status: 200,
             } as Response;
         });
-        expect(await client.create('my_blueprint')).toEqual({ testResponse: true });
+        expect(await client.create("my_blueprint")).toEqual({ testResponse: true });
     });
 
-    it('should be able to create a blueprint with a base_image_uri and blueprint_name', async () => {
+    it("should be able to create a blueprint with a base_image_uri and blueprint_name", async () => {
         const client = new Client(undefined, async (input, init) => {
-            expect(input).toBe('http://localhost:54321/create');
+            expect(input).toBe("http://localhost:54321/create");
             expect(init?.headers).toEqual({
-                'Content-Type': 'application/json',
+                "Content-Type": "application/json",
             });
             expect(init?.body).toEqual('{"blueprint_name":"my_blueprint","base_image_uri":"my_base_image"}');
             console.log(input, init);
@@ -76,25 +76,25 @@ describe('Client', () => {
             } as Response;
         });
         expect(await client.create({
-            blueprint_name: 'my_blueprint',
-            base_image_uri: 'my_base_image',
+            blueprint_name: "my_blueprint",
+            base_image_uri: "my_base_image",
         })).toEqual({ testResponse: true });
     });
 
-    it('should be able to create a blueprint with a base_image_uri and custom blueprint', async () => {
+    it("should be able to create a blueprint with a base_image_uri and custom blueprint", async () => {
         const body = {
-            base_image_uri: 'my_base_image',
+            base_image_uri: "my_base_image",
             blueprint: {
-                Name: 'foo',
+                Name: "foo",
                 Homeservers: [{
-                    Name: 'homeserver',
+                    Name: "homeserver",
                 }],
             },
         };
         const client = new Client(undefined, async (input, init) => {
-            expect(input).toBe('http://localhost:54321/create');
+            expect(input).toBe("http://localhost:54321/create");
             expect(init?.headers).toEqual({
-                'Content-Type': 'application/json',
+                "Content-Type": "application/json",
             });
             expect(JSON.parse(init?.body as string)).toEqual(body);
             console.log(input, init);
@@ -106,11 +106,11 @@ describe('Client', () => {
         expect(await client.create(body)).toEqual({ testResponse: true });
     });
 
-    it('should be able to destroy a blueprint', async () => {
+    it("should be able to destroy a blueprint", async () => {
         const client = new Client(undefined, async (input, init) => {
-            expect(input).toBe('http://localhost:54321/destroy');
+            expect(input).toBe("http://localhost:54321/destroy");
             expect(init?.headers).toEqual({
-                'Content-Type': 'application/json',
+                "Content-Type": "application/json",
             });
             expect(init?.body).toEqual('{"blueprint_name":"my_blueprint"}');
             console.log(input, init);
@@ -119,33 +119,33 @@ describe('Client', () => {
                 status: 200,
             } as Response;
         });
-        await client.destroy('my_blueprint');
+        await client.destroy("my_blueprint");
     });
 
-    it('should raise errors appropriately', async () => {
+    it("should raise errors appropriately", async () => {
         const client = new Client(undefined, async () => {
             return {
-                text: async () => 'an error',
+                text: async () => "an error",
                 status: 401,
             } as Response;
         });
         try {
-            await client.create('foo');
-            fail('Expected to throw');
+            await client.create("foo");
+            fail("Expected to throw");
         } catch (ex) {
             if (ex instanceof HomerunnerError) {
-                expect(ex.message).toEqual('Encountered an error while processing a homerunner request: 401 an error');
+                expect(ex.message).toEqual("Encountered an error while processing a homerunner request: 401 an error");
             } else {
                 throw ex;
             }
         }
 
         try {
-            await client.destroy('foo');
-            fail('Expected to throw');
+            await client.destroy("foo");
+            fail("Expected to throw");
         } catch (ex) {
             if (ex instanceof HomerunnerError) {
-                expect(ex.message).toEqual('Encountered an error while processing a homerunner request: 401 an error');
+                expect(ex.message).toEqual("Encountered an error while processing a homerunner request: 401 an error");
             } else {
                 throw ex;
             }

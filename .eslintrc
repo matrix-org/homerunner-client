@@ -4,5 +4,8 @@
     ],
     "extends": [
         "plugin:matrix-org/typescript"
-    ]
+    ],
+    "parserOptions": {
+        "project": "./tsconfig.lint.json"
+    }
 }

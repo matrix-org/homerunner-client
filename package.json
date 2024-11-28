@@ -1,6 +1,6 @@
 {
   "name": "homerunner-client",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A JS library for interfacing with Complement's homerunner application.",
   "main": "lib/index.js",
   "author": "Half-Shot <me@half-shot.uk>",
