@@ -49,10 +49,14 @@ export interface Blueprint {
         Rooms?: (Room&{Ref: string}|Room&{Creator: string})[];
         // The list of application services to create on the homeserver
         ApplicationServices?: {
+            ASToken: string;
+            EnableEncryption?: boolean;
+            HSToken: string;
             ID: string;
-            URL?: string;
-            SenderLocalpart?: string;
             RateLimited?: boolean;
+            SendEphemeral?: boolean;
+            SenderLocalpart?: string;
+            URL?: string;
         }[];
     }[];
     // A set of user IDs to retain access_tokens for. If empty, all tokens are kept.
