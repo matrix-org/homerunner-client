@@ -13,7 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-import { Blueprint } from './blueprint';
+import { Blueprint } from "./blueprint";
 
 export interface Homeserver {
     BaseURL: string;
@@ -59,7 +59,7 @@ export interface CreateResponse {
 }
 
 export class HomerunnerError extends Error {
-    constructor(statusCode: number, body: string) {
+    public constructor(statusCode: number, body: string) {
         super(`Encountered an error while processing a homerunner request: ${statusCode} ${body}`);
     }
 }
@@ -77,11 +77,11 @@ export class Client {
      * @param fetch Fetch function compatable with the [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API). This will
      * use either the native fetch provided by Node 18+, or a polyfill.
      */
-    constructor(
+    public constructor(
         public readonly baseUrl = process.env.HOMERUNNER_URL ||
             `http://localhost:${process.env.HOMERUNNER_PORT ?? 54321}`,
         private readonly fetch = global.fetch) {
-        if (baseUrl.endsWith('/')) {
+        if (baseUrl.endsWith("/")) {
             this.baseUrl = baseUrl.slice(0, -1);
         }
     }
@@ -90,13 +90,13 @@ export class Client {
      * Deploy a blueprint.
      * @param nameOrOptions Either a blueprint name that has been previously defined, or a in-line blueprint.
      */
-    async create(nameOrOptions: string|CreateOptions): Promise<CreateResponse> {
-        const options = typeof nameOrOptions === 'string' ? { blueprint_name: nameOrOptions } : nameOrOptions;
+    public async create(nameOrOptions: string|CreateOptions): Promise<CreateResponse> {
+        const options = typeof nameOrOptions === "string" ? { blueprint_name: nameOrOptions } : nameOrOptions;
         const req = this.fetch(`${this.baseUrl}/create`, {
-            method: 'POST',
+            method: "POST",
             body: JSON.stringify(options),
             headers: {
-                'Content-Type': 'application/json',
+                "Content-Type": "application/json",
             },
         });
         const result = await req;
@@ -110,12 +110,12 @@ export class Client {
      * Destroy a blueprint.
      * @param blueprintName The name of the blueprint to destroy.
      */
-    async destroy(blueprintName: string) {
+    public async destroy(blueprintName: string): Promise<void> {
         const req = this.fetch(`${this.baseUrl}/destroy`, {
-            method: 'POST',
+            method: "POST",
             body: JSON.stringify({ blueprint_name: blueprintName }),
             headers: {
-                'Content-Type': 'application/json',
+                "Content-Type": "application/json",
             },
         });
         const result = await req;
@@ -127,13 +127,13 @@ export class Client {
     /**
      * Check to see if the homerunner service is up and listening for requests.
      */
-    async health() {
+    public async health(): Promise<void> {
         const req = this.fetch(`${this.baseUrl}/health`, {
-            method: 'GET'
+            method: "GET",
         });
         const result = await req;
         if (result.status !== 200) {
-            throw new Error('Homerunner did not respond with an OK response');
+            throw new Error("Homerunner did not respond with an OK response");
         }
     }
 }
